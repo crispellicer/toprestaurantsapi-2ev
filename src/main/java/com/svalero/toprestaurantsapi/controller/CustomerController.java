@@ -61,7 +61,7 @@ public class CustomerController {
     }
 
     @PutMapping("/customers/{id}")
-    public ResponseEntity<Customer> modifyCustomer(@PathVariable long id, @RequestBody Customer customer) throws CustomerNotFoundException{
+    public ResponseEntity<Customer> modifyCustomer(@PathVariable long id, @Valid @RequestBody Customer customer) throws CustomerNotFoundException{
         logger.debug("begin modifyCustomer");
         Customer modifiedCustomer = customerService.modifyCustomer(id, customer);
         logger.debug("end modifyCustomer");

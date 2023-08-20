@@ -81,7 +81,7 @@ public class ReserveController {
     }
 
     @PutMapping("/reserves/{id}")
-    public ResponseEntity<Reserve> modifyReserve(@PathVariable long id, @RequestBody Reserve reserve) throws ReserveNotFoundException {
+    public ResponseEntity<Reserve> modifyReserve(@PathVariable long id, @Valid @RequestBody Reserve reserve) throws ReserveNotFoundException {
         logger.debug("begin modifyReserve");
         Reserve modifiedReserve = reserveService.modifyReserve(id, reserve);
         logger.debug("end modifyReserve");

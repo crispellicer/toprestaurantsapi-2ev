@@ -61,7 +61,7 @@ public class ShiftController {
     }
 
     @PutMapping("/shifts/{id}")
-    public ResponseEntity<Shift> modifyShift(@PathVariable long id, @RequestBody Shift shift) throws ShiftNotFoundException{
+    public ResponseEntity<Shift> modifyShift(@PathVariable long id, @Valid @RequestBody Shift shift) throws ShiftNotFoundException{
         logger.debug("begin modifyShift");
         Shift modifiedShift = shiftService.modifyShift(id, shift);
         logger.debug("end modifyShift");

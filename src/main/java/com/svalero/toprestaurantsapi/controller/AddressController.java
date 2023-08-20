@@ -61,7 +61,7 @@ public class AddressController {
     }
 
     @PutMapping("/addresses/{id}")
-    public ResponseEntity<Address> modifyAddress(@PathVariable long id, @RequestBody Address address) throws AddressNotFoundException{
+    public ResponseEntity<Address> modifyAddress(@PathVariable long id, @Valid @RequestBody Address address) throws AddressNotFoundException{
         logger.debug("begin modifyAddress");
         Address modifiedAddress = addressService.modifyAddress(id, address);
         logger.debug("end modifyAddress");

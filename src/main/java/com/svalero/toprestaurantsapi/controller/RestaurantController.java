@@ -73,7 +73,7 @@ public class RestaurantController {
     }
 
     @PutMapping("/restaurants/{id}")
-    public ResponseEntity<Restaurant> modifyRestaurant(@PathVariable long id, @RequestBody Restaurant restaurant) throws RestaurantNotFoundException {
+    public ResponseEntity<Restaurant> modifyRestaurant(@PathVariable long id, @Valid @RequestBody Restaurant restaurant) throws RestaurantNotFoundException {
         logger.debug("begin modifyRestaurant");
         Restaurant modifiedRestaurant = restaurantService.modifyRestaurant(id, restaurant);
         logger.debug("end modifyRestaurant");
