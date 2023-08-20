@@ -32,8 +32,15 @@ public class ReserveController {
     private final Logger logger = LoggerFactory.getLogger(ReserveController.class);
 
     @GetMapping("/reserves")
-    public ResponseEntity<List<ReserveOutDTO>> getReserves(@RequestParam(name = "isPaid", defaultValue = "") String isPaid) {
+    public ResponseEntity<?> getReserves(@RequestParam(name = "isPaid", defaultValue = "") String isPaid) {
         logger.debug("begin getReserves");
+
+        if (!isPaid.equals("true") && !isPaid.equals("false") && !isPaid.isEmpty()) {
+            Map<String, String> errors = Map.of("isPaid", "Allowed values: true, false or empty");
+            ErrorMessage errorMessage = new ErrorMessage(400, "Invalid parameter", errors);
+            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        }
+
         if (isPaid.equals("")) {
             logger.debug("end getReserves");
             return ResponseEntity.ok(reserveService.findAll());

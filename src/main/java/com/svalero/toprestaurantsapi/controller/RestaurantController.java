@@ -30,8 +30,15 @@ public class RestaurantController {
     private final Logger logger = LoggerFactory.getLogger(ReserveController.class);
 
     @GetMapping("/restaurants")
-    public ResponseEntity<List<Restaurant>> getRestaurants(@RequestParam(name = "veganmenu", defaultValue = "") String veganmenu) {
+    public ResponseEntity<?> getRestaurants(@RequestParam(name = "veganmenu", defaultValue = "") String veganmenu) {
         logger.debug("begin getRestaurants");
+
+        if (!veganmenu.equals("true") && !veganmenu.equals("false") && !veganmenu.isEmpty()) {
+            Map<String, String> errors = Map.of("veganmenu", "Allowed values: true, false or empty");
+            ErrorMessage errorMessage = new ErrorMessage(400, "Invalid parameter", errors);
+            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        }
+
         if (veganmenu.equals("")) {
             logger.debug("end getRestaurants");
             return ResponseEntity.ok(restaurantService.findAll());

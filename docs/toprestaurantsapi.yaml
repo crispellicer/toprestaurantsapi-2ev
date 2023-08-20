@@ -232,6 +232,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ReserveOutDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /reserves/{reserveId}:
@@ -354,6 +356,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Restaurant'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
     post:
