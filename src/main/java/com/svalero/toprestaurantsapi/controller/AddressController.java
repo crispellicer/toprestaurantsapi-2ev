@@ -32,9 +32,8 @@ public class AddressController {
             logger.debug("end getAddresses");
             return ResponseEntity.ok(addressService.findAll());
         } else {
-            String cityy = city;
             logger.debug("end getAddresses");
-            return ResponseEntity.ok(addressService.findByCity(cityy));
+            return ResponseEntity.ok(addressService.findByCity(city));
         }
     }
 

@@ -32,9 +32,8 @@ public class CustomerController {
             logger.debug("end getCustomers");
             return ResponseEntity.ok(customerService.findAll());
         } else {
-            String customerName = name;
             logger.debug("end getCustomers");
-            return ResponseEntity.ok(customerService.findByName(customerName));
+            return ResponseEntity.ok(customerService.findByName(name));
         }
     }
 
