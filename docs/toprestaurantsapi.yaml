@@ -112,6 +112,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AddressInformation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
@@ -210,6 +212,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CustomerInformation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
@@ -288,6 +292,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReserveInformation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
@@ -434,6 +440,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RestaurantInformation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
@@ -528,6 +536,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ShiftInformation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
