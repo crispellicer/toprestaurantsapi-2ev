@@ -1,0 +1,984 @@
+openapi: 3.0.2
+servers:
+  - url: https://api.toprestaurants.com
+info:
+  description: API for making reservations in different restaurants
+
+  version: "1.0"
+  title: Top Restaurants API
+tags:
+  - name: Addresses
+    description: Addresses operations
+  - name: Customers
+    description: Customers operations
+  - name: Reserves
+    description: Reserves operations
+  - name: Restaurants
+    description: Restaurants operations
+  - name: Shifts
+    description: shifts operations
+paths:
+  /addresses:
+    get:
+      tags:
+        - Addresses
+      summary: Addresses' list
+      description: It obtains the information of all registered addresses
+      operationId: getAddresses
+      parameters:
+        - $ref: '#/components/parameters/City'
+      responses:
+        '200':
+          description: The list of addresses is returned correctly
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Address'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Addresses
+      summary: Registration of a new address
+      description: It registers a new address in the database
+      operationId: postAddress
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+      responses:
+        '201':
+          description: The address is registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /addresses/{addressId}:
+    get:
+      tags:
+        - Addresses
+      summary: It obtains the information of a specific address
+      description: It obtains the information of the address whose id is given in the URL
+      operationId: getAddress
+      parameters:
+        - $ref: '#/components/parameters/AddressId'
+      responses:
+        '200':
+          description: Address information is returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressInformation'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Addresses
+      summary: Delete an address
+      description: Delete an address from the database based on the addressId
+      operationId: deleteAddress
+      parameters:
+        - $ref: '#/components/parameters/AddressId'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Addresses
+      summary: Modify an address
+      description: It modifies the information of the address whose id is given in the URL
+      operationId: putAddress
+      parameters:
+        - $ref: '#/components/parameters/AddressId'
+      requestBody:
+        - $ref: '#/components/requestBodies/Address'
+      responses:
+        '200':
+          description: The address has been successfully modified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressInformation'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /customers:
+    get:
+      tags:
+        - Customers
+      summary: Customers' list
+      description: It obtains the information of all registered customers
+      operationId: getCustomers
+      parameters:
+        - $ref: '#/components/parameters/CustomerName'
+      responses:
+        '200':
+          description: The list of customers is returned correctly
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Customers
+      summary: Registration of a new customer
+      description: It registers a new customer in the application
+      operationId: postCustomer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: The customer is registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /customers/{customerId}:
+    get:
+      tags:
+        - Customers
+      summary: It obtains the information of a specific customer
+      description: It obtains the information of the customer whose id is given in the URL
+      operationId: getCustomer
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Customer information is returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerInformation'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Customers
+      summary: Delete a customer
+      description: Delete a customer from the database based on the customerId
+      operationId: deleteCustomer
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Customers
+      summary: Modify a customer
+      description: It modifies the information of the customer whose id is given in the URL
+      operationId: putCustomer
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      requestBody:
+        - $ref: '#/components/requestBodies/Customer'
+      responses:
+        '200':
+          description: The customer has been successfully modified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerInformation'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /reserves:
+    get:
+      tags:
+        - Reserves
+      summary: Reserves' list
+      description: It obtains the information of all reserves made
+      operationId: getReserves
+      parameters:
+        - $ref: '#/components/parameters/IsPaid'
+      responses:
+        '200':
+          description: The list of reserves is returned correctly
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReserveOutDTO'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /reserves/{reserveId}:
+    get:
+      tags:
+        - Reserves
+      summary: It obtains the information of a specific reserve
+      description: It obtains the information of the reserve whose id is given in the URL
+      operationId: getReserve
+      parameters:
+        - $ref: '#/components/parameters/ReserveId'
+      responses:
+        '200':
+          description: Reserve information is returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReserveInformation'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Reserves
+      summary: Delete a reserve
+      description: Delete a restaurant reserve based on the reserveId
+      operationId: deleteReserve
+      parameters:
+        - $ref: '#/components/parameters/ReserveId'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Reserves
+      summary: Modify a reserve
+      description: It modifies the information of the reserve whose id is given in the URL
+      operationId: putReserve
+      parameters:
+        - $ref: '#/components/parameters/ReserveId'
+      requestBody:
+        - $ref: '#/components/requestBodies/Reserve'
+      responses:
+        '200':
+          description: The reserve has been successfully modified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReserveInformation'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /restaurants/{restaurantId}/reserves:
+    get:
+      tags:
+        - Reserves
+      summary: It obtains information about the reserves in a specific restaurant
+      description: It obtains the information about the reserve in a specific restaurant, whose id is given in the URL
+      operationId: getReserveByRestaurantId
+      parameters:
+        - $ref: '#/components/parameters/RestaurantId'
+      responses:
+        '200':
+          description: Reserve information is returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReserveInformation'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Reserves
+      summary: Registration of a new reserve
+      description: It registers a new reserve in a certain restaurant, whose id is given in the URL
+      operationId: postReserve
+      parameters:
+        - $ref: '#/components/parameters/RestaurantId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReserveInDTO'
+      responses:
+        '201':
+          description: The reserve is registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reserve'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /restaurants:
+    get:
+      tags:
+        - Restaurants
+      summary: Restaurants' list
+      description: It obtains the information of all registered restaurants
+      operationId: getRestaurants
+      parameters:
+        - $ref: '#/components/parameters/VeganMenu'
+      responses:
+        '200':
+          description: The list of restaurants is returned correctly
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Restaurants
+      summary: Registration of a new restaurant
+      description: It registers a new restaurant in the database
+      operationId: postRestaurant
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RestaurantDTO'
+      responses:
+        '201':
+          description: The restaurant is registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /restaurants/{restaurantId}:
+    get:
+      tags:
+        - Restaurants
+      summary: It obtains the information of a specific restaurant
+      description: It obtains the information of the restaurant whose id is given in the URL
+      operationId: getRestaurant
+      parameters:
+        - $ref: '#/components/parameters/RestaurantId'
+      responses:
+        '200':
+          description: Restaurant information is returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestaurantInformation'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Restaurants
+      summary: Delete a restaurant
+      description: Delete a restaurant from the database based on the restaurantId
+      operationId: deleteRestaurant
+      parameters:
+        - $ref: '#/components/parameters/RestaurantId'
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Restaurants
+      summary: Modify a restaurant
+      description: It modifies the information of the restaurant whose id is given in the URL
+      operationId: putRestaurant
+      parameters:
+        - $ref: '#/components/parameters/RestaurantId'
+      requestBody:
+        - $ref: '#/components/requestBodies/Restaurant'
+      responses:
+        '200':
+          description: The restaurant has been successfully modified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestaurantInformation'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /shifts:
+    get:
+      tags:
+        - Shifts
+      summary: Shifts' list
+      description: It obtains the information of all registered shifts
+      operationId: getShifts
+      parameters:
+        - $ref: '#/components/parameters/ShiftName'
+      responses:
+        '200':
+          description: The list of shifts is returned correctly
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shift'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Shifts
+      summary: Registration of a new shift
+      description: It registers a new shift of a restaurant
+      operationId: postShift
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shift'
+      responses:
+        '201':
+          description: The shift is registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shift'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /shifts/{shiftId}:
+    parameters:
+      - $ref: '#/components/parameters/ShiftId'
+    get:
+      tags:
+        - Shifts
+      summary: It obtains the information of a specific shift
+      description: It obtains the information of the shift whose id is given in the URL
+      operationId: getShift
+      responses:
+        '200':
+          description: Shift information is returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShiftInformation'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Shifts
+      summary: Delete a shift
+      description: Delete a shift os a restaurant based on the shiftId
+      operationId: deleteShift
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Shifts
+      summary: Modify a shift
+      description: It modifies the information of the shift whose id is given in the URL
+      operationId: putShift
+      requestBody:
+        - $ref: '#/components/requestBodies/Shift'
+      responses:
+        '200':
+          description: The shift has been successfully modified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShiftInformation'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Address id
+          example: 1
+        type:
+          type: string
+          description: Road type
+          example: Avenida
+        name:
+          type: string
+          description: Road name
+          example: Mayor
+        number:
+          type: integer
+          description: Address portal number
+          example: 2
+        postalCode:
+          type: integer
+          description: Address postal code
+          example: 50004
+        city:
+          type: string
+          description: City to which the address belongs
+          example: Zaragoza
+        restaurant:
+          $ref: '#/components/schemas/Restaurant'
+    Customer:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Customer id
+          example: 20
+        name:
+          type: string
+          description: Customer name
+          example: Cristina
+        surname:
+          type: string
+          description: Customer surname
+          example: Pellicer
+        telephone:
+          type: string
+          description: Customer telephone number
+          example: 555666777
+        birthDate:
+          type: date
+          description: Customer birth date
+          example: 1990-05-20
+        vip:
+          type: boolean
+          description: It indicates if the customer is vip
+          example:
+        reserves:
+          $ref: '#/components/schemas/Reserve'
+    Reserve:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Reserve id
+          example: 3
+        people:
+          type: integer
+          description: Number of people on the reserve
+          example: 5
+        tables:
+          type: integer
+          description: Number of tables needed on the reserve
+          example: 2
+        reserveDate:
+          type: date
+          description: Reserve date
+          example: 2023-09-10
+        isPaid:
+          type: boolean
+          description: It indicates if the reserve is paid
+          example: true
+        allergic:
+          type: boolean
+          description: It indicates if there is someone allergic on the reserve
+          example: false
+        restaurant:
+          $ref: '#/components/schemas/Restaurant'
+        customer:
+          $ref: '#/components/schemas/Customer'
+        shift:
+          $ref: '#/components/schemas/Shift'
+    ReserveOutDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Reserve id
+          example: 3
+        people:
+          type: integer
+          description: Number of people on the reserve
+          example: 5
+        reserveDate:
+          type: date
+          description: Reserve date
+          example: 2023-09-10
+        isPaid:
+          type: boolean
+          description: It indicates if the reserve is paid
+          example: true
+    ReserveInDTO:
+      type: object
+      properties:
+        people:
+          type: integer
+          description: Number of people on the reserve
+          example: 5
+        tables:
+          type: integer
+          description: Number of tables needed on the reserve
+          example: 2
+        reserveDate:
+          type: date
+          description: Reserve date
+          example: 2023-09-10
+        isPaid:
+          type: boolean
+          description: It indicates if the reserve is paid
+          example: true
+        allergic:
+          type: boolean
+          description: It indicates if there is someone allergic on the reserve
+          example: false
+        customer:
+          type: number
+          description: Customer ID
+          example: 2
+        shift:
+          type: number
+          description: Shift ID
+          example: 3
+    Restaurant:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Restaurant id
+          example: 12
+        name:
+          type: string
+          description: Restaurant name
+          example: Kanalla
+        timetable:
+          type: string
+          description: Restaurant timetable
+          example: 12.00-23.00
+        type:
+          type: string
+          description:  type of restaurant
+          example: Cocina creativa
+        reservePrice:
+          type: number
+          description: Reserve price
+          example: 20.50
+        veganMenu:
+          type: boolean
+          description: It indicates if there is vegan menu at the restaurant
+          example: true
+        website:
+          type: string
+          description: Restaurant website
+          example: kanalla.com
+        address:
+          $ref: '#/components/schemas/Address'
+        reserves:
+          $ref: '#/components/schemas/Reserve'
+    RestaurantDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Restaurant name
+          example: Kanalla
+        timetable:
+          type: string
+          description: Restaurant timetable
+          example: 12.00-23.00
+        type:
+          type: string
+          description: type of restaurant
+          example: Cocina creativa
+        reservePrice:
+          type: number
+          description: Reserve price
+          example: 20.50
+        veganMenu:
+          type: boolean
+          description: It indicates if there is vegan menu at the restaurant
+          example: true
+        website:
+          type: string
+          description: Restaurant website
+          example: kanalla.com
+        address:
+          type: number
+          description: Address ID
+          example: 1
+    Shift:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Shift id
+          example: 1
+        name:
+          type: string
+          description: Shift name
+          example: dinner
+        startTime:
+          type: time
+          description: Shift start time
+          example: 20:30
+        endingTime:
+          type: time
+          description: Shift ending time
+          example: 23:30
+        reserves:
+          $ref: '#/components/schemas/Reserve'
+    AddressInformation:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Address'
+      properties:
+        id:
+          type: integer
+          description: Address ID
+          example: 2
+    CustomerInformation:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Customer'
+      properties:
+        id:
+          type: integer
+          description: Customer ID
+          example: 5
+    ReserveInformation:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Reserve'
+      properties:
+        id:
+          type: integer
+          description: Reserve ID
+          example: 9
+    RestaurantInformation:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Restaurant'
+      properties:
+        id:
+          type: integer
+          description: Restaurant ID
+          example: 1
+    ShiftInformation:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Shift'
+      properties:
+        id:
+          type: integer
+          description: Shift ID
+          example: 8
+    BadRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          description: status code
+          example: 400
+        message:
+          type: string
+          description: Error message
+          example: Validation error
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorField'
+    ErrorField:
+      type: object
+      description: Validation error on an input field
+      properties:
+        fieldName:
+          type: string
+          description: The field where the error occurred
+          example: reserveDate
+        message:
+          type: string
+          description: Error message associated with the field
+          example: This field is required
+    NotFound:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Status code
+          example: 404
+        message:
+          type: string
+          description: Error message
+          example: Resource not found
+    InternalServerError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Status code
+          example: 500
+        message:
+          type: string
+          description: Error message
+          example: Internal Server Error
+  responses:
+    NoContent:
+      description: No Content
+    BadRequest:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BadRequest'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotFound'
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerError'
+  parameters:
+    AddressId:
+      name: addressId
+      in: path
+      description: Address ID
+      required: true
+      schema:
+        type: integer
+    CustomerId:
+      name: customerId
+      in: path
+      description: Customer ID
+      required: true
+      schema:
+        type: integer
+    ReserveId:
+      name: reserveId
+      in: path
+      description: Reserve ID
+      required: true
+      schema:
+        type: integer
+    RestaurantId:
+      name: restaurantId
+      in: path
+      description: Restaurant ID
+      required: true
+      schema:
+        type: integer
+    ShiftId:
+      name: shiftId
+      in: path
+      description: Shift ID
+      required: true
+      schema:
+        type: integer
+    City:
+      name: city
+      in: query
+      description: Address city
+      required: false
+      schema:
+        type: string
+    CustomerName:
+      name: name
+      in: query
+      description: Customer name
+      required: false
+      schema:
+        type: string
+    IsPaid:
+      name: isPaid
+      in: query
+      description: It indicates if the reserve is paid
+      required: false
+      schema:
+        type: boolean
+        default: false
+    VeganMenu:
+      name: veganMenu
+      in: query
+      description: It indicates if there is vegan menu at the restaurant
+      required: false
+      schema:
+        type: boolean
+        default: false
+    ShiftName:
+      name: name
+      in: query
+      description: Shift name
+      required: false
+      schema:
+        type: string
+  requestBodies:
+    Address:
+      description: New address data
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Address'
+    Customer:
+      description: New customer data
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Customer'
+    Reserve:
+      description: New reserve data
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Reserve'
+    Restaurant:
+      description: New restaurant data
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Restaurant'
+    Shift:
+      description: New shift data
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Shift'
