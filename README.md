@@ -1,12 +1,19 @@
 # toprestaurantsapi
 
-### Durante el desarrollo de la aplicación se han llevado a cabo las siguientes funcionalidades:
+### API utilizada para el desarrollo de la aplicación Android
 
-- [x] El modelo de datos estará compuesto de, al menos, 5 clases y tendrán que existir relaciones entre ellas. Cada clase tendrá, al menos, 6 atributos (String, int, float, boolean y algún tipo para almacenar fechas). Cada clase tendrá, al menos, 2 atributos obligatorios y algún otro con algún tipo de restricción de formato/validación.
-- [x] Se tendrá que poder realizar, el menos, las operaciones CRUD sobre cada una de las clases. Se controlarán, al menos, los errores 400, 404 y 500.
-- [x] Añade opciones de filtrado para al menos una operación en cada clase en donde se puedan indicar hasta 3 campos diferentes (solo aplicable para operaciones GET).
-- [x] Prepara una colección Postman que permita probar todas las operaciones desarrolladas.
-- [x] Configura en el proyecto la librería logback para que la aplicación web cuente con un log. Añade trazas en el código de forma que permita seguir el rastro de ejecución en el log (para todas las operaciones que se puedan realizar y también para los casos en los que se recojan errores).
-- [x] Utiliza la herramienta Git (y GitHub) durante todo el desarrollo de la aplicación. Escribe el fichero README.md para explicar cómo poner en marcha el proyecto. Utiliza el gestor de Issues para los problemas/fallos que vayan surgiendo.
-- [x] Añade 2 nuevos endpoints a la aplicación (sin repetir método) que realicen nuevas operaciones con los datos y que requieran el uso de DTOs y/o utilizar las relaciones entre las clases.
+Durante el desarrollo de la aplicación se han llevado a cabo las siguientes funcionalidades:
 
+ [x]La aplicación deberá consumir la API diseñada y desarrollada en la asignatura de Acceso a Datos. Al menos 2 operaciones de cada uno de estos métodos: POST, GET, PUT y DELETE. Al menos una de ellas permitirá listar información
+ La comunicación con la API se llevará a cabo utilizando Retrofit
+ Se hará uso de mapas para mostrar información (si es necesario, habrá que añadir información geográfica a alguno de los recursos de la API diseñada)
+ La aplicación se diseñará utilizando el patrón MVP (Model View Presenter)
+ El usuario podrá almacenar como “favorito” aquella información de la API que le resulte de interés
+ Utilizar la Directions API para guiar al usuario a alguna ubicación relevante en la aplicación
+ Utiliza la herramienta Git (y GitHub) durante todo el desarrollo de la aplicación. Utiliza el gestor de Issues para los problemas/fallos que vayan surgiendo
+ Añadir un menú de preferencias con al menos 3 opciones que modifiquen el comportamiento de la aplicación. Este menú estará siempre disponible en el ActionBar
+ Hacer uso de mapas en las pantalla donde se registre información. Para indicar información geográfica, por ejemplo
+ El usuario podrá hacer búsquedas para filtrar la información en los listados de datos
+ Diseñar al menos 3 layouts para otras posiciones de la pantalla (portrait/landscape)
+ Utilizar Material Design para personalizar el diseño de la aplicación
+ Utilizar las credenciales de usuario en la aplicación para comunicarse con la API (si ésta se encuentra securizada con token JWT)
