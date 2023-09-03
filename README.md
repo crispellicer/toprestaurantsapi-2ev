@@ -1,8 +1,8 @@
 # toprestaurantsapi
 
-### API utilizada para el desarrollo de la aplicación Android
+### API de restaurantes para la asignatura de Acceso a Datos.
 
-Durante el desarrollo de la aplicación se han llevado a cabo las siguientes funcionalidades:
+Durante el desarrollo de la API se han llevado a cabo las siguientes funcionalidades:
 
  - [x] Diseña la API y escribe el fichero OpenAPI 3.0 de la API. Incluye, al menos, los casos de éxito (20X), 400, 404 y los 500.
  - [x] Diseña una API Virtual de forma que existan, al menos, 3 Casos de Uso para cada operación (tanto de OK como para KO).
