@@ -1,6 +1,7 @@
 package com.svalero.toprestaurantsapi.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,11 @@ public class Restaurant {
     private boolean veganMenu;
     @Column
     private String website;
+    @Column
+    private double longitude;
+    @Column
+    private double latitude;
+
 
     @OneToOne
     @JoinColumn(name = "address_id")

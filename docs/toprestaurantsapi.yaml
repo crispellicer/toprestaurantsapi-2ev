@@ -49,6 +49,21 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Address'
+            examples:
+              example1:
+                value:
+                  type: Calle
+                  name: Mayor
+                  number: 1
+                  postalCode: 50001
+                  city: Zaragoza
+              example2:
+                value:
+                  type: Avenida
+                  name: Navarra
+                  number: 60
+                  postalCode: 50004
+                  city: Zaragoza
       responses:
         '201':
           description: The address is registered successfully
@@ -104,7 +119,25 @@ paths:
       parameters:
         - $ref: '#/components/parameters/AddressId'
       requestBody:
-        - $ref: '#/components/requestBodies/Address'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+            examples:
+              example1:
+                value:
+                  type: Calle
+                  name: Mayor
+                  number: 1
+                  postalCode: 50001
+                  city: Zaragoza
+              example2:
+                value:
+                  type: Avenida
+                  name: Navarra
+                  number: 60
+                  postalCode: 50004
+                  city: Zaragoza
       responses:
         '200':
           description: The address has been successfully modified
@@ -149,6 +182,21 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Customer'
+            examples:
+              example1:
+                value:
+                  name: Cristina
+                  surname: Pellicer Garcia
+                  telephone: 222333555
+                  birthDate: 1996-03-17
+                  vip: true
+              example2:
+                value:
+                  name: Adrian
+                  surname: Garcia Gonzalez
+                  telephone: 111222999
+                  birthDate: 1991-08-10
+                  vip: false
       responses:
         '201':
           description: The customer is registered successfully
@@ -204,7 +252,25 @@ paths:
       parameters:
         - $ref: '#/components/parameters/CustomerId'
       requestBody:
-        - $ref: '#/components/requestBodies/Customer'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+            examples:
+              example1:
+                value:
+                  name: Cristina
+                  surname: Pellicer Garcia
+                  telephone: 222333555
+                  birthDate: 1996-03-17
+                  vip: true
+              example2:
+                value:
+                  name: Adrian
+                  surname: Garcia Gonzalez
+                  telephone: 111222999
+                  birthDate: 1991-08-10
+                  vip: false
       responses:
         '200':
           description: The customer has been successfully modified
@@ -284,7 +350,29 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ReserveId'
       requestBody:
-        - $ref: '#/components/requestBodies/Reserve'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reserve'
+            examples:
+              example1:
+                value:
+                  people: 2
+                  tables: 1
+                  reserveDate: 2023-09-06
+                  isPaid: true
+                  allergic: false
+                  customer: 2
+                  shift: 2
+              example2:
+                value:
+                  people: 12
+                  tables: 2
+                  reserveDate: 2023-10-25
+                  isPaid: false
+                  allergic: true
+                  customer: 5
+                  shift: 1
       responses:
         '200':
           description: The reserve has been successfully modified
@@ -331,6 +419,25 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ReserveInDTO'
+            examples:
+              example1:
+                value:
+                  people: 2
+                  tables: 1
+                  reserveDate: 2023-09-06
+                  isPaid: true
+                  allergic: false
+                  customer: 2
+                  shift: 2
+              example2:
+                value:
+                  people: 12
+                  tables: 2
+                  reserveDate: 2023-10-25
+                  isPaid: false
+                  allergic: true
+                  customer: 5
+                  shift: 1
       responses:
         '201':
           description: The reserve is registered successfully
@@ -377,6 +484,29 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RestaurantDTO'
+            examples:
+              example1:
+                value:
+                  name: Carnivoro
+                  timetable: 13.00-17.00
+                  type: brasa
+                  reservePrice: 10
+                  veganMenu: false
+                  website: carnivoro.com
+                  longitude: 20.2
+                  latitude: 1.56
+                  address: 2
+              example2:
+                value:
+                  name: La Bombonera
+                  timetable: 19.00-23.00
+                  type: cocina creativa
+                  reservePrice: 0
+                  veganMenu: true
+                  website: bombonera.com
+                  longitude: 26.2
+                  latitude: 0.71
+                  address: 3
       responses:
         '201':
           description: The restaurant is registered successfully
@@ -386,6 +516,8 @@ paths:
                 $ref: '#/components/schemas/Restaurant'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /restaurants/{restaurantId}:
@@ -432,7 +564,33 @@ paths:
       parameters:
         - $ref: '#/components/parameters/RestaurantId'
       requestBody:
-        - $ref: '#/components/requestBodies/Restaurant'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Restaurant'
+            examples:
+              example1:
+                value:
+                  name: Carnivoro
+                  timetable: 13.00-17.00
+                  type: brasa
+                  reservePrice: 10
+                  veganMenu: false
+                  website: carnivoro.com
+                  longitude: 20.2
+                  latitude: 1.56
+                  address: 2
+              example2:
+                value:
+                  name: La Bombonera
+                  timetable: 19.00-23.00
+                  type: cocina creativa
+                  reservePrice: 0
+                  veganMenu: true
+                  website: bombonera.com
+                  longitude: 26.2
+                  latitude: 0.71
+                  address: 3
       responses:
         '200':
           description: The restaurant has been successfully modified
@@ -477,6 +635,17 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Shift'
+            examples:
+              example1:
+                value:
+                  name: lunch
+                  startTime: 13:00
+                  endingTime: 15:00
+              example2:
+                value:
+                  name: dinner
+                  startTime: 20:00
+                  endingTime: 22:00
       responses:
         '201':
           description: The shift is registered successfully
@@ -528,7 +697,21 @@ paths:
       description: It modifies the information of the shift whose id is given in the URL
       operationId: putShift
       requestBody:
-        - $ref: '#/components/requestBodies/Shift'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shift'
+            examples:
+              example1:
+                value:
+                  name: lunch
+                  startTime: 13:00
+                  endingTime: 15:00
+              example2:
+                value:
+                  name: dinner
+                  startTime: 20:00
+                  endingTime: 22:00
       responses:
         '200':
           description: The shift has been successfully modified
@@ -599,9 +782,7 @@ components:
         vip:
           type: boolean
           description: It indicates if the customer is vip
-          example:
-        reserves:
-          $ref: '#/components/schemas/Reserve'
+          example: true
     Reserve:
       type: object
       properties:
@@ -716,10 +897,16 @@ components:
           type: string
           description: Restaurant website
           example: kanalla.com
+        longitude:
+          type: number
+          description: Restaurant longitude
+          example: 20.38
+        latitude:
+          type: number
+          description: Restaurant latitude
+          example: 0.86
         address:
           $ref: '#/components/schemas/Address'
-        reserves:
-          $ref: '#/components/schemas/Reserve'
     RestaurantDTO:
       type: object
       properties:
@@ -747,6 +934,14 @@ components:
           type: string
           description: Restaurant website
           example: kanalla.com
+        longitude:
+          type: number
+          description: Restaurant longitude
+          example: 20.38
+        latitude:
+          type: number
+          description: Restaurant latitude
+          example: 0.86
         address:
           type: number
           description: Address ID
@@ -770,8 +965,6 @@ components:
           type: time
           description: Shift ending time
           example: 23:30
-        reserves:
-          $ref: '#/components/schemas/Reserve'
     AddressInformation:
       type: object
       allOf:
@@ -895,6 +1088,11 @@ components:
       required: true
       schema:
         type: integer
+      examples:
+        example1:
+          value: 1
+        example2:
+          value: 2
     CustomerId:
       name: customerId
       in: path
@@ -902,6 +1100,11 @@ components:
       required: true
       schema:
         type: integer
+      examples:
+        example1:
+          value: 1
+        example2:
+          value: 32
     ReserveId:
       name: reserveId
       in: path
@@ -909,6 +1112,11 @@ components:
       required: true
       schema:
         type: integer
+      examples:
+        example1:
+          value: 5
+        example2:
+          value: 20
     RestaurantId:
       name: restaurantId
       in: path
@@ -916,6 +1124,11 @@ components:
       required: true
       schema:
         type: integer
+      examples:
+        example1:
+          value: 2
+        example2:
+          value: 30
     ShiftId:
       name: shiftId
       in: path
@@ -923,6 +1136,11 @@ components:
       required: true
       schema:
         type: integer
+      examples:
+        example1:
+          value: 1
+        example2:
+          value: 4
     City:
       name: city
       in: query
@@ -930,6 +1148,11 @@ components:
       required: false
       schema:
         type: string
+      examples:
+        example1:
+          value: Zaragoza
+        example2:
+          value: Madrid
     CustomerName:
       name: name
       in: query
@@ -937,6 +1160,11 @@ components:
       required: false
       schema:
         type: string
+      examples:
+        example1:
+          value: Cristina
+        example2:
+          value: Santiago
     IsPaid:
       name: isPaid
       in: query
@@ -953,6 +1181,11 @@ components:
       schema:
         type: boolean
         default: false
+      examples:
+        example1:
+          value: false
+        example2:
+          value: true
     ShiftName:
       name: name
       in: query
@@ -960,6 +1193,11 @@ components:
       required: false
       schema:
         type: string
+      examples:
+        example1:
+          value: dinner
+        example2:
+          value: lunch
   requestBodies:
     Address:
       description: New address data

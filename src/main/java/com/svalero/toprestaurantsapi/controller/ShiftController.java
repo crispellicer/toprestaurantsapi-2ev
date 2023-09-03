@@ -32,9 +32,8 @@ public class ShiftController {
             logger.debug("end getShifts");
             return ResponseEntity.ok(shiftService.findAll());
         } else {
-            String shiftName = name;
             logger.debug("end getShifts");
-            return ResponseEntity.ok(shiftService.findByName(shiftName));
+            return ResponseEntity.ok(shiftService.findByName(name));
         }
     }
 

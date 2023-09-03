@@ -25,6 +25,8 @@ public class RestaurantServiceImpl implements RestaurantService{
     @Autowired
     private ModelMapper modelMapper;
 
+    private Address address;
+
     @Override
     public List<Restaurant> findAll() {
         return restaurantRepository.findAll();
@@ -45,16 +47,16 @@ public class RestaurantServiceImpl implements RestaurantService{
     public Restaurant addRestaurant(RestaurantDTO restaurantDTO) throws AddressNotFoundException, AddressAlreadyInARestaurantException {
         Restaurant newRestaurant = new Restaurant();
         modelMapper.map(restaurantDTO, newRestaurant);
-        Address address = addressRepository.findById(restaurantDTO.getAddress())
-                .orElseThrow(AddressNotFoundException::new);
-
-        if (address.getRestaurant() != null){
-            throw new AddressAlreadyInARestaurantException();
+        if (restaurantDTO.getAddress() != null) {
+            Address address = addressRepository.findById(restaurantDTO.getAddress())
+                    .orElseThrow(AddressNotFoundException::new);
+            if (address.getRestaurant() != null){
+                throw new AddressAlreadyInARestaurantException();
+            }
+            newRestaurant.setAddress(address);
         }
 
-        newRestaurant.setAddress(address);
         return restaurantRepository.save(newRestaurant);
-
 
     }
 
@@ -74,7 +76,9 @@ public class RestaurantServiceImpl implements RestaurantService{
         existingRestaurant.setType(newRestaurant.getType());
         existingRestaurant.setReservePrice(newRestaurant.getReservePrice());
         existingRestaurant.setVeganMenu(newRestaurant.isVeganMenu());
-        existingRestaurant.setWebsite(newRestaurant.getWebsite());;
+        existingRestaurant.setWebsite(newRestaurant.getWebsite());
+        existingRestaurant.setLongitude(newRestaurant.getLongitude());
+        existingRestaurant.setLatitude(newRestaurant.getLatitude());
         return restaurantRepository.save(existingRestaurant);
     }
 }

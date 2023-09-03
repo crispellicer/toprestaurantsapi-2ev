@@ -1,5 +1,6 @@
 package com.svalero.toprestaurantsapi.domain.dto;
 
+import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 @Data
 @NoArgsConstructor
@@ -24,5 +26,7 @@ public class RestaurantDTO {
     private double reservePrice;
     private boolean veganMenu;
     private String website;
-    private long address;
+    private double longitude;
+    private double latitude;
+    private Long address;
 }
