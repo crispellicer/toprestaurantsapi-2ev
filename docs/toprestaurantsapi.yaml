@@ -579,7 +579,6 @@ paths:
                   website: carnivoro.com
                   longitude: 20.2
                   latitude: 1.56
-                  address: 2
               example2:
                 value:
                   name: La Bombonera
@@ -754,8 +753,6 @@ components:
           type: string
           description: City to which the address belongs
           example: Zaragoza
-        restaurant:
-          $ref: '#/components/schemas/Restaurant'
     Customer:
       type: object
       properties:
@@ -1032,7 +1029,7 @@ components:
         fieldName:
           type: string
           description: The field where the error occurred
-          example: reserveDate
+          example: name
         message:
           type: string
           description: Error message associated with the field
@@ -1173,6 +1170,11 @@ components:
       schema:
         type: boolean
         default: false
+      examples:
+        example1:
+          value: false
+        example2:
+          value: true
     VeganMenu:
       name: veganMenu
       in: query
