@@ -2,10 +2,8 @@ package com.svalero.toprestaurantsapi.controller;
 
 import com.svalero.toprestaurantsapi.domain.Restaurant;
 import com.svalero.toprestaurantsapi.domain.dto.RestaurantDTO;
-import com.svalero.toprestaurantsapi.exception.AddressAlreadyInARestaurantException;
-import com.svalero.toprestaurantsapi.exception.AddressNotFoundException;
-import com.svalero.toprestaurantsapi.exception.ErrorMessage;
-import com.svalero.toprestaurantsapi.exception.RestaurantNotFoundException;
+import com.svalero.toprestaurantsapi.exception.*;
+import com.svalero.toprestaurantsapi.exception.NumberFormatException;
 import com.svalero.toprestaurantsapi.service.RestaurantService;
 
 import org.slf4j.Logger;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -49,9 +46,13 @@ public class RestaurantController {
         }
     }
 
-    @GetMapping("/restaurants/{id}")
-    public ResponseEntity<Restaurant> getRestaurant(@PathVariable long id) throws RestaurantNotFoundException {
+    @GetMapping("/restaurants/{stringId}")
+    public ResponseEntity<Restaurant> getRestaurant(@PathVariable String stringId) throws RestaurantNotFoundException, NumberFormatException {
         logger.debug("begin getRestaurant");
+        if (!stringId.matches("[0-9]*")) {
+            throw new NumberFormatException();
+        }
+        long id = Long.parseLong(stringId);
         Restaurant restaurant = restaurantService.findById(id);
         logger.debug("end getRestaurant");
         return ResponseEntity.ok(restaurant);
@@ -98,6 +99,13 @@ public class RestaurantController {
     public ResponseEntity<ErrorMessage> handleAddressAlreadyInARestaurantException(AddressAlreadyInARestaurantException aaiare) {
         logger.error(aaiare.getMessage(), aaiare);
         ErrorMessage errorMessage = new ErrorMessage(400, aaiare.getMessage());
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<ErrorMessage> handleFormatNumberException(NumberFormatException nfe) {
+        logger.error(nfe.getMessage(), nfe);
+        ErrorMessage errorMessage = new ErrorMessage(400, nfe.getMessage());
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 

@@ -2,6 +2,7 @@ package com.svalero.toprestaurantsapi.controller;
 
 import com.svalero.toprestaurantsapi.domain.Shift;
 import com.svalero.toprestaurantsapi.exception.ErrorMessage;
+import com.svalero.toprestaurantsapi.exception.NumberFormatException;
 import com.svalero.toprestaurantsapi.exception.ShiftNotFoundException;
 import com.svalero.toprestaurantsapi.service.ShiftService;
 import org.slf4j.Logger;
@@ -37,9 +38,13 @@ public class ShiftController {
         }
     }
 
-    @GetMapping("/shifts/{id}")
-    public ResponseEntity<Shift> getShift(@PathVariable long id) throws ShiftNotFoundException {
+    @GetMapping("/shifts/{stringId}")
+    public ResponseEntity<Shift> getShift(@PathVariable String stringId) throws ShiftNotFoundException, NumberFormatException {
         logger.debug("begin getShift");
+        if (!stringId.matches("[0-9]*")) {
+            throw new NumberFormatException();
+        }
+        long id = Long.parseLong(stringId);
         Shift shift = shiftService.findById(id);
         logger.debug("end getShift");
         return ResponseEntity.ok(shift);
@@ -72,6 +77,13 @@ public class ShiftController {
         logger.error(snfe.getMessage(), snfe);
         ErrorMessage errorMessage = new ErrorMessage(404, snfe.getMessage());
         return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<ErrorMessage> handleFormatNumberException(NumberFormatException nfe) {
+        logger.error(nfe.getMessage(), nfe);
+        ErrorMessage errorMessage = new ErrorMessage(400, nfe.getMessage());
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

@@ -3,6 +3,7 @@ package com.svalero.toprestaurantsapi.controller;
 import com.svalero.toprestaurantsapi.domain.Customer;
 import com.svalero.toprestaurantsapi.exception.CustomerNotFoundException;
 import com.svalero.toprestaurantsapi.exception.ErrorMessage;
+import com.svalero.toprestaurantsapi.exception.NumberFormatException;
 import com.svalero.toprestaurantsapi.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,9 +38,13 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/customers/{id}")
-    public ResponseEntity<Customer> getCustomer(@PathVariable long id) throws CustomerNotFoundException {
+    @GetMapping("/customers/{stringId}")
+    public ResponseEntity<Customer> getCustomer(@PathVariable String stringId) throws CustomerNotFoundException, NumberFormatException {
         logger.debug("begin getCustomer");
+        if (!stringId.matches("[0-9]*")) {
+            throw new NumberFormatException();
+        }
+        long id = Long.parseLong(stringId);
         Customer customer = customerService.findById(id);
         logger.debug("end getCustomer");
         return ResponseEntity.ok(customer);
@@ -72,6 +77,13 @@ public class CustomerController {
         logger.error(cnfe.getMessage(), cnfe);
         ErrorMessage errorMessage = new ErrorMessage(404, cnfe.getMessage());
         return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<ErrorMessage> handleFormatNumberException(NumberFormatException nfe) {
+        logger.error(nfe.getMessage(), nfe);
+        ErrorMessage errorMessage = new ErrorMessage(400, nfe.getMessage());
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

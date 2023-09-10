@@ -3,6 +3,7 @@ package com.svalero.toprestaurantsapi.controller;
 import com.svalero.toprestaurantsapi.domain.Address;
 import com.svalero.toprestaurantsapi.exception.AddressNotFoundException;
 import com.svalero.toprestaurantsapi.exception.ErrorMessage;
+import com.svalero.toprestaurantsapi.exception.NumberFormatException;
 import com.svalero.toprestaurantsapi.service.AddressService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,9 +38,13 @@ public class AddressController {
         }
     }
 
-    @GetMapping("/addresses/{id}")
-    public ResponseEntity<Address> getAddress(@PathVariable long id) throws AddressNotFoundException {
+    @GetMapping("/addresses/{stringId}")
+    public ResponseEntity<Address> getAddress(@PathVariable String stringId) throws AddressNotFoundException, NumberFormatException {
         logger.debug("begin getAddress");
+        if (!stringId.matches("[0-9]*")) {
+            throw new NumberFormatException();
+        }
+        long id = Long.parseLong(stringId);
         Address address = addressService.findById(id);
         logger.debug("end getAddress");
         return ResponseEntity.ok(address);
@@ -72,6 +77,13 @@ public class AddressController {
         logger.error(anfe.getMessage(), anfe);
         ErrorMessage errorMessage = new ErrorMessage(404, anfe.getMessage());
         return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<ErrorMessage> handleFormatNumberException(NumberFormatException nfe) {
+        logger.error(nfe.getMessage(), nfe);
+        ErrorMessage errorMessage = new ErrorMessage(400, nfe.getMessage());
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
