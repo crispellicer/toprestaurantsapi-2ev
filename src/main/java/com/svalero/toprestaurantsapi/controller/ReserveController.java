@@ -3,8 +3,8 @@ package com.svalero.toprestaurantsapi.controller;
 import com.svalero.toprestaurantsapi.domain.Reserve;
 import com.svalero.toprestaurantsapi.domain.Restaurant;
 import com.svalero.toprestaurantsapi.domain.dto.ReserveInDTO;
-import com.svalero.toprestaurantsapi.domain.dto.ReserveOutDTO;
 import com.svalero.toprestaurantsapi.exception.*;
+import com.svalero.toprestaurantsapi.exception.NumberFormatException;
 import com.svalero.toprestaurantsapi.service.ReserveService;
 import com.svalero.toprestaurantsapi.service.RestaurantService;
 import org.slf4j.Logger;
@@ -58,9 +58,13 @@ public class ReserveController {
         return ResponseEntity.ok(reserves);
     }
 
-    @GetMapping("/reserves/{id}")
-    public ResponseEntity<Reserve> getReserve(@PathVariable long id) throws ReserveNotFoundException {
+    @GetMapping("/reserves/{stringId}")
+    public ResponseEntity<Reserve> getReserve(@PathVariable String stringId) throws ReserveNotFoundException, NumberFormatException {
         logger.debug("begin getReserve");
+        if (!stringId.matches("[0-9]*")) {
+            throw new NumberFormatException();
+        }
+        long id = Long.parseLong(stringId);
         Reserve reserve = reserveService.findById(id);
         logger.debug("end getReserve");
         return ResponseEntity.ok(reserve);
@@ -107,6 +111,13 @@ public class ReserveController {
         logger.error(cnfe.getMessage(), cnfe);
         ErrorMessage errorMessage = new ErrorMessage(404, cnfe.getMessage());
         return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<ErrorMessage> handleFormatNumberException(NumberFormatException nfe) {
+        logger.error(nfe.getMessage(), nfe);
+        ErrorMessage errorMessage = new ErrorMessage(400, nfe.getMessage());
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
